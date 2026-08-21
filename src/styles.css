@@ -201,8 +201,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
 .footer-grid { position: relative; display: grid; grid-template-columns: 1.5fr .6fr .8fr; gap: 80px; padding-bottom: 68px; }
 .brand-lockup--footer .logo-mark { filter: brightness(0) invert(1); }
 .brand-lockup--footer .brand-name { color: white; }
-.footer-intro .brand-lockup { transition: transform .25s ease; }
-.footer-intro:hover .brand-lockup { transform: translateY(-3px); }
+.footer-brand-button { padding: 0; }
 .footer-grid > div:first-child p { max-width: 430px; color: #929793; line-height: 1.8; margin-top: 24px; }
 .footer-grid h4 { font-size: 12px; letter-spacing: .2em; color: var(--lime); margin: 0 0 22px; }
 .footer-grid button, .footer-grid a, .footer-grid p { display: block; padding: 0; margin: 0 0 12px; color: #c4c7c5; text-align: left; }
@@ -247,7 +246,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   html { scroll-behavior: auto; }
   .reveal { animation: none; }
   .topbar, .brand-button, .logo-mark, .desktop-nav button, .desktop-nav button::after,
-  .footer-intro .brand-lockup, .footer-links button, .footer-contact a, .back-to-top, .back-to-top svg { transition: none; }
+  .footer-links button, .footer-contact a, .back-to-top, .back-to-top svg { transition: none; }
   .motion-photo {
     opacity: 1;
     transform: none;
