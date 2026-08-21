@@ -111,7 +111,7 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .photo-c { width: 34%; height: 43%; right: 0; bottom: 8%; }
 .about-square { position: absolute; width: 230px; height: 220px; left: 22%; bottom: 0; background: var(--lime); }
 .about-dots { position: absolute; top: 48px; right: 8%; }
-.about-copy h2, .section-title h2, .bmi-content h2, .section-heading-row h2, .newsletter h2 { font-size: clamp(46px, 5vw, 76px); }
+.about-copy h2, .section-title h2, .bmi-content h2, .newsletter h2 { font-size: clamp(46px, 5vw, 76px); }
 .about-copy p:not(.eyebrow), .bmi-content > p:not(.eyebrow), .results-intro > p:not(.eyebrow), .cta-copy > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 560px; }
 .about-copy .outline-button { margin-top: 18px; }
 
@@ -153,20 +153,6 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .bmi-result { margin-top: 16px; padding: 18px 20px; background: var(--soft); display: flex; align-items: center; gap: 20px; }
 .bmi-result strong { font-family: 'Archivo Black'; font-size: 34px; color: var(--lime); }
 .bmi-result span { font-weight: 800; text-transform: uppercase; font-size: 13px; }
-
-.tips { padding: 45px 0 145px; }
-.section-heading-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 58px; }
-.blog-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 26px; }
-.blog-card { min-height: 530px; background: var(--soft); position: relative; overflow: hidden; }
-.blog-card img { width: 100%; height: 100%; object-fit: cover; }
-.blog-card.large::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 38%, rgba(0,0,0,.78)); }
-.blog-overlay { position: absolute; left: 38px; right: 38px; bottom: 34px; color: white; z-index: 3; }
-.blog-overlay span, .blog-body span { font-size: 11px; letter-spacing: .16em; font-weight: 900; }
-.blog-overlay h3, .blog-body h3 { font-family: 'Archivo Black'; text-transform: uppercase; font-size: 28px; line-height: 1.07; margin: 10px 0 18px; }
-.blog-overlay button { border: 0; background: transparent; padding: 0; color: white; font-weight: 900; font-size: 11px; display: flex; gap: 9px; align-items: center; }
-.blog-card:not(.large) img { height: 54%; }
-.blog-body { padding: 30px; }
-.blog-body p { color: var(--muted); line-height: 1.6; }
 
 .results { width: 100%; max-width: none; background: var(--black); color: white; padding: 120px max(28px, calc((100vw - 1400px)/2)); display: grid; grid-template-columns: .72fr 1.28fr; gap: 70px; align-items: center; }
 .results-intro h2 { font-size: clamp(52px, 5.3vw, 82px); }
@@ -313,16 +299,13 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   .hero-stats strong { font-size: 34px; }
   .about, .bmi, .cta { grid-template-columns: 1fr; padding: 84px 0; gap: 52px; }
   .photo-collage { height: clamp(420px, 65vw, 500px); }
-  .about-copy h2, .section-title h2, .bmi-content h2, .section-heading-row h2, .newsletter h2 { font-size: clamp(42px, 12vw, 64px); }
+  .about-copy h2, .section-title h2, .bmi-content h2, .newsletter h2 { font-size: clamp(42px, 12vw, 64px); }
   .programs, .results { padding-top: 78px; padding-bottom: 78px; }
   .program-heading { grid-template-columns: 1fr; gap: 24px; }
   .program-heading > p { max-width: 650px; }
   .bmi-art { min-height: clamp(440px, 68vw, 520px); order: 2; }
   .bmi-content { order: 1; }
   .bmi-photo { height: clamp(420px, 65vw, 500px); }
-  .section-heading-row { align-items: flex-start; flex-direction: column; }
-  .blog-grid { grid-template-columns: 1fr; }
-  .blog-card { min-height: 480px; }
   .testimonial { grid-template-columns: 1fr; }
   .testimonial { min-height: 0; }
   .testimonial > img { height: clamp(330px, 55vw, 420px); }
@@ -376,7 +359,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   .hero-stats strong { min-width: 58px; }
   .about, .bmi, .cta { padding: 72px 0; gap: 42px; }
   .photo-collage { height: clamp(330px, 92vw, 390px); }
-  .about-copy h2, .section-title h2, .bmi-content h2, .section-heading-row h2, .newsletter h2,
+  .about-copy h2, .section-title h2, .bmi-content h2, .newsletter h2,
   .results-intro h2, .cta-copy h2 { font-size: clamp(34px, 10.5vw, 46px); line-height: 1; }
   .about-copy p:not(.eyebrow), .bmi-content > p:not(.eyebrow), .results-intro > p:not(.eyebrow), .cta-copy > p:not(.eyebrow) { font-size: 15px; line-height: 1.7; }
   .benefits { padding: 30px 0 78px; }
@@ -395,14 +378,6 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   .bmi-form .primary-button { grid-column: auto; }
   .bmi-art { min-height: clamp(340px, 98vw, 390px); }
   .bmi-photo { height: clamp(320px, 92vw, 370px); width: 84%; }
-  .tips { padding: 28px 0 76px; }
-  .section-heading-row { margin-bottom: 36px; }
-  .blog-card { min-height: 0; }
-  .blog-card.large { height: 450px; }
-  .blog-overlay { left: 22px; right: 22px; bottom: 24px; }
-  .blog-overlay h3, .blog-body h3 { font-size: 23px; }
-  .blog-card:not(.large) img { height: 250px; }
-  .blog-body { padding: 24px 20px 28px; }
   .testimonial > img { height: clamp(270px, 78vw, 320px); }
   .testimonial-text { padding: 32px 22px; min-height: 310px; }
   .testimonial-text > p { font-size: 17px; line-height: 1.65; }
@@ -412,7 +387,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   .contact-card { padding: 26px 20px; }
   .bmi-form input, .contact-card input, .contact-card select, .newsletter-form input { min-height: 54px; font-size: 16px; }
   .newsletter { padding: 40px 16px; }
-  .hero-copy > .primary-button, .about-copy > .outline-button, .section-heading-row > .outline-button,
+  .hero-copy > .primary-button, .about-copy > .outline-button,
   .contact-card .primary-button, .newsletter-form .primary-button { width: 100%; }
   footer { padding: 62px max(20px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -431,11 +406,10 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   .hero h1 { font-size: clamp(36px, 11.8vw, 42px); }
   .hero-visual { height: 360px; }
   .photo-collage { height: 320px; }
-  .about-copy h2, .section-title h2, .bmi-content h2, .section-heading-row h2, .newsletter h2,
+  .about-copy h2, .section-title h2, .bmi-content h2, .newsletter h2,
   .results-intro h2, .cta-copy h2 { font-size: 34px; }
   .bmi-art { min-height: 340px; }
   .bmi-photo { height: 320px; }
-  .blog-card.large { height: 410px; }
   .testimonial > img { height: 270px; }
 }
 

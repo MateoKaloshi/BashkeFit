@@ -323,26 +323,6 @@ function App() {
           </div>
         </section>
 
-        <section className="tips section">
-          <div className="section-heading-row reveal">
-            <div>
-              <p className="eyebrow">TË REJAT NGA BLOGU</p>
-              <h2>KËSHILLA DHE<br /><span>IDE TË SHËNDETSHME</span></h2>
-            </div>
-            <button className="outline-button">SHIKO TË GJITHA <ArrowRight size={18} /></button>
-          </div>
-          <div className="blog-grid">
-            <article className="blog-card large reveal">
-              <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=85" alt="Ushqim i shëndetshëm" loading="lazy" decoding="async" />
-              <div className="blog-overlay"><span>USHQYERJE</span><h3>Ndërto vakte që mbështesin objektivat e stërvitjes</h3><button>LEXO MË SHUMË <ArrowRight size={16} /></button></div>
-            </article>
-            <article className="blog-card reveal">
-              <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=900&q=85" alt="Stërvitje në palestër" loading="lazy" decoding="async" />
-              <div className="blog-body"><span>STËRVITJE</span><h3>Si t’i bësh stërvitjet më të vazhdueshme</h3><p>Sistemet e vogla janë zakonisht më të fuqishme se shpërthimet e shkurtra të motivimit.</p></div>
-            </article>
-          </div>
-        </section>
-
         <section className="results section" id="results">
           <div className="results-intro reveal">
             <p className="eyebrow light">HISTORI KLIENTËSH</p>
