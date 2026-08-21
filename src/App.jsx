@@ -66,7 +66,9 @@ function App() {
   const [testimonial, setTestimonial] = useState(0)
   const [bmi, setBmi] = useState(null)
   const [form, setForm] = useState({ age: '', weight: '', height: '' })
+  const [activeSection, setActiveSection] = useState('home')
   const [navOnDark, setNavOnDark] = useState(false)
+  const [navScrolled, setNavScrolled] = useState(false)
 
   useEffect(() => {
     const photos = document.querySelectorAll('.motion-photo')
@@ -88,27 +90,46 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const updateNavbarTheme = () => {
+    let animationFrame
+
+    const updateNavbar = () => {
+      animationFrame = undefined
       const navbar = document.querySelector('.topbar')
       if (!navbar) return
 
-      const navbarMiddle = navbar.getBoundingClientRect().top + navbar.offsetHeight / 2
-      const isOverDarkSection = [...document.querySelectorAll('.programs, .results, footer')]
-        .some((section) => {
+      const navbarBounds = navbar.getBoundingClientRect()
+      const marker = navbarBounds.bottom + 24
+      const sections = navigation
+        .map(({ id }) => document.getElementById(id))
+        .filter(Boolean)
+
+      const currentSection = [...sections].reverse().find((section) => (
+        section.getBoundingClientRect().top <= marker
+      ))
+      const darkSection = [...document.querySelectorAll('.programs, .results, footer')]
+        .find((section) => {
           const bounds = section.getBoundingClientRect()
+          const navbarMiddle = navbarBounds.top + navbarBounds.height / 2
           return bounds.top <= navbarMiddle && bounds.bottom >= navbarMiddle
         })
 
-      setNavOnDark(isOverDarkSection)
+      setActiveSection(currentSection?.id || 'home')
+      setNavOnDark(Boolean(darkSection))
+      setNavScrolled(window.scrollY > 24)
     }
 
-    updateNavbarTheme()
-    window.addEventListener('scroll', updateNavbarTheme, { passive: true })
-    window.addEventListener('resize', updateNavbarTheme)
+    const requestUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateNavbar)
+    }
+
+    updateNavbar()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate)
 
     return () => {
-      window.removeEventListener('scroll', updateNavbarTheme)
-      window.removeEventListener('resize', updateNavbarTheme)
+      window.removeEventListener('scroll', requestUpdate)
+      window.removeEventListener('resize', requestUpdate)
+      if (animationFrame) window.cancelAnimationFrame(animationFrame)
     }
   }, [])
 
@@ -137,14 +158,21 @@ function App() {
 
   return (
     <div className="site-shell">
-      <header className={`topbar${navOnDark ? ' topbar--dark' : ''}`}>
+      <header className={`topbar${navOnDark ? ' topbar--dark' : ''}${navScrolled ? ' topbar--scrolled' : ''}`}>
         <button className="brand-button" onClick={() => scrollTo('home')} aria-label="Shko te kreu">
           <Brand />
         </button>
 
         <nav className="desktop-nav" aria-label="Navigimi kryesor">
           {navigation.map((item) => (
-            <button key={item.id} onClick={() => scrollTo(item.id)}>{item.label}</button>
+            <button
+              key={item.id}
+              className={activeSection === item.id ? 'is-active' : ''}
+              aria-current={activeSection === item.id ? 'page' : undefined}
+              onClick={() => scrollTo(item.id)}
+            >
+              {item.label}
+            </button>
           ))}
         </nav>
 
