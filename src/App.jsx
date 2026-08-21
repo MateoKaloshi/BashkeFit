@@ -367,8 +367,8 @@ function App() {
       <footer>
         <div className="footer-grid">
           <div className="footer-intro"><button className="footer-brand-button" onClick={() => scrollTo('home')} aria-label="Shko te kreu"><Brand footer /></button><p>Stërvitje, udhëzim dhe një komunitet i krijuar për të të mbajtur gjithmonë në lëvizje.</p></div>
-          <div className="footer-links"><h4>MENU-JA</h4><button onClick={() => scrollTo('home')}>Kreu</button><button onClick={() => scrollTo('about')}>Rreth nesh</button><button onClick={() => scrollTo('programs')}>Programet</button></div>
-          <div className="footer-contact"><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><p>bashkefit@gmail.com</p><a href="tel:+355690000000">+355 69 000 0000</a></div>
+          <div className="footer-links"><h4>MENU-ja</h4><button onClick={() => scrollTo('home')}>Kreu</button><button onClick={() => scrollTo('about')}>Rreth nesh</button><button onClick={() => scrollTo('programs')}>Programet</button></div>
+          <div className="footer-contact"><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><a href="https://www.instagram.com/bashkefit" target="_blank" rel="noreferrer">Instagram</a><p>bashkefit@gmail.com</p></div>
         </div>
         <div className="footer-bottom">
           <span>© 2026 BashkëFit</span>
