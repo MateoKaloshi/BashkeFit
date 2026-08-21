@@ -366,11 +366,15 @@ function App() {
 
       <footer>
         <div className="footer-grid">
-          <div><Brand footer /><p>Stërvitje, udhëzim dhe një komunitet i krijuar për të të mbajtur gjithmonë në lëvizje.</p></div>
-          <div><h4>MENYJA</h4><button onClick={() => scrollTo('home')}>Kreu</button><button onClick={() => scrollTo('about')}>Rreth nesh</button><button onClick={() => scrollTo('programs')}>Programet</button></div>
-          <div><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><a href="mailto:hello@bashkefit.com">hello@bashkefit.com</a><p>+355 69 000 0000</p></div>
+          <div className="footer-intro"><Brand footer /><p>Stërvitje, udhëzim dhe një komunitet i krijuar për të të mbajtur gjithmonë në lëvizje.</p></div>
+          <div className="footer-links"><h4>MENYJA</h4><button onClick={() => scrollTo('home')}>Kreu</button><button onClick={() => scrollTo('about')}>Rreth nesh</button><button onClick={() => scrollTo('programs')}>Programet</button></div>
+          <div className="footer-contact"><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><a href="mailto:hello@bashkefit.com">hello@bashkefit.com</a><a href="tel:+355690000000">+355 69 000 0000</a></div>
         </div>
-        <div className="footer-bottom"><span>© 2026 BashkëFit</span><span>Ndërtuar me React + Vite</span></div>
+        <div className="footer-bottom">
+          <span>© 2026 BashkëFit</span>
+          <button className="back-to-top" onClick={() => scrollTo('home')}>KTHEHU LART <ChevronRight size={16} /></button>
+          <span>Ndërtuar me React + Vite</span>
+        </div>
       </footer>
     </div>
   )

@@ -196,15 +196,27 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .newsletter-form .primary-button { background: var(--black); color: white; }
 .newsletter-form .primary-button:hover { background: var(--white); color: var(--black); }
 
-footer { background: #0b0d0c; color: white; padding: 80px max(28px, calc((100vw - 1400px)/2)) 24px; }
-.footer-grid { display: grid; grid-template-columns: 1.5fr .6fr .8fr; gap: 80px; padding-bottom: 60px; }
+footer { position: relative; overflow: hidden; background: #0b0d0c; color: white; padding: 88px max(28px, calc((100vw - 1400px)/2)) 24px; }
+footer::before { content: ''; position: absolute; width: 360px; height: 360px; right: -170px; top: -210px; border-radius: 50%; background: rgba(130,230,117,.1); filter: blur(3px); pointer-events: none; }
+.footer-grid { position: relative; display: grid; grid-template-columns: 1.5fr .6fr .8fr; gap: 80px; padding-bottom: 68px; }
 .brand-lockup--footer .logo-mark { filter: brightness(0) invert(1); }
 .brand-lockup--footer .brand-name { color: white; }
-.footer-grid > div:first-child p { max-width: 430px; color: #929793; line-height: 1.7; }
+.footer-intro .brand-lockup { transition: transform .25s ease; }
+.footer-intro:hover .brand-lockup { transform: translateY(-3px); }
+.footer-grid > div:first-child p { max-width: 430px; color: #929793; line-height: 1.8; margin-top: 24px; }
 .footer-grid h4 { font-size: 12px; letter-spacing: .2em; color: var(--lime); margin: 0 0 22px; }
-.footer-grid button, .footer-grid a, .footer-grid p { display: block; padding: 0; margin: 0 0 10px; color: #c4c7c5; text-align: left; }
+.footer-grid button, .footer-grid a, .footer-grid p { display: block; padding: 0; margin: 0 0 12px; color: #c4c7c5; text-align: left; }
+.footer-links button, .footer-contact a { position: relative; width: fit-content; transition: color .2s ease, transform .2s ease; }
+.footer-links button::before, .footer-contact a::before { content: ''; position: absolute; width: 0; height: 2px; left: 0; bottom: -3px; background: var(--lime); transition: width .22s ease; }
+.footer-links button:hover, .footer-contact a:hover { color: var(--white); transform: translateX(4px); }
+.footer-links button:hover::before, .footer-contact a:hover::before { width: 100%; }
 .footer-grid a { overflow-wrap: anywhere; }
-.footer-bottom { border-top: 1px solid #292d2a; padding-top: 22px; display: flex; justify-content: space-between; color: #7f8581; font-size: 12px; }
+.footer-bottom { position: relative; border-top: 1px solid #292d2a; padding-top: 22px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; color: #7f8581; font-size: 12px; }
+.footer-bottom > span:last-child { text-align: right; }
+.back-to-top { border: 1px solid #343936; border-radius: 999px; background: transparent; color: #c4c7c5; padding: 9px 14px; display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 900; letter-spacing: .12em; transition: color .2s ease, border-color .2s ease, transform .2s ease; }
+.back-to-top svg { transform: rotate(-90deg); transition: transform .2s ease; }
+.back-to-top:hover { color: var(--lime); border-color: var(--lime); transform: translateY(-2px); }
+.back-to-top:hover svg { transform: rotate(-90deg) translateX(2px); }
 
 .reveal { animation: rise .72s ease both; }
 @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
@@ -234,7 +246,8 @@ footer { background: #0b0d0c; color: white; padding: 80px max(28px, calc((100vw 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { animation: none; }
-  .topbar, .brand-button, .logo-mark, .desktop-nav button, .desktop-nav button::after { transition: none; }
+  .topbar, .brand-button, .logo-mark, .desktop-nav button, .desktop-nav button::after,
+  .footer-intro .brand-lockup, .footer-links button, .footer-contact a, .back-to-top, .back-to-top svg { transition: none; }
   .motion-photo {
     opacity: 1;
     transform: none;
@@ -380,7 +393,9 @@ footer { background: #0b0d0c; color: white; padding: 80px max(28px, calc((100vw 
   footer { padding: 62px 20px 22px; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
   .footer-grid > div:first-child { grid-column: auto; }
-  .footer-bottom { flex-direction: column; gap: 8px; }
+  .footer-bottom { grid-template-columns: 1fr; gap: 14px; }
+  .footer-bottom > span:last-child { text-align: left; }
+  .back-to-top { justify-self: start; }
   .motion-photo.from-left { --photo-x: -190px; }
   .motion-photo.from-right { --photo-x: 190px; }
   .motion-photo.from-top { --photo-y: -180px; }
