@@ -6,8 +6,10 @@ import {
   ChevronRight,
   Dumbbell,
   HeartPulse,
+  Menu,
   Salad,
   TimerReset,
+  X,
 } from 'lucide-react'
 
 const navigation = [
@@ -69,6 +71,7 @@ function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [navOnDark, setNavOnDark] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const photos = document.querySelectorAll('.motion-photo')
@@ -87,6 +90,22 @@ function App() {
 
     photos.forEach((photo) => observer.observe(photo))
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const closeMobileMenu = (event) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+    const closeMenuOnDesktop = () => {
+      if (window.innerWidth > 640) setMenuOpen(false)
+    }
+
+    window.addEventListener('keydown', closeMobileMenu)
+    window.addEventListener('resize', closeMenuOnDesktop)
+    return () => {
+      window.removeEventListener('keydown', closeMobileMenu)
+      window.removeEventListener('resize', closeMenuOnDesktop)
+    }
   }, [])
 
   useEffect(() => {
@@ -150,6 +169,7 @@ function App() {
   }
 
   const scrollTo = (id) => {
+    setMenuOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -163,7 +183,18 @@ function App() {
           <Brand />
         </button>
 
-        <nav className="desktop-nav" aria-label="Navigimi kryesor">
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label={menuOpen ? 'Mbyll menunë' : 'Hap menunë'}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X size={23} /> : <Menu size={23} />}
+        </button>
+
+        <nav id="main-navigation" className={`desktop-nav${menuOpen ? ' is-open' : ''}`} aria-label="Navigimi kryesor">
           {navigation.map((item) => (
             <button
               key={item.id}
@@ -182,7 +213,7 @@ function App() {
         <section className="hero section" id="home">
           <div className="hero-copy reveal">
             <p className="eyebrow">STËRVITJE PERSONALE ONLINE DHE FIZIKISHT</p>
-            <h1>NDËRTO FORCË.<br />KRIJO <span>RITËM.</span></h1>
+            <h1>NDËRTO FORCË.<br />KRIJO <span className="hero-accent">RITËM.</span></h1>
             <p className="hero-description">
               Stërvitje e zgjuar, udhëzim personal dhe një plan i ndërtuar rreth objektivave të tua — që progresi të bëhet pjesë e rutinës.
             </p>
