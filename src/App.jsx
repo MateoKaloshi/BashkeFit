@@ -372,8 +372,6 @@ function App() {
         </div>
         <div className="footer-bottom">
           <span>© 2026 BashkëFit</span>
-          <button className="back-to-top" onClick={() => scrollTo('home')}>KTHEHU LART <ChevronRight size={16} /></button>
-          <span>Ndërtuar me React + Vite</span>
         </div>
       </footer>
     </div>

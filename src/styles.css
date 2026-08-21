@@ -210,12 +210,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
 .footer-links button:hover, .footer-contact a:hover { color: var(--white); transform: translateX(4px); }
 .footer-links button:hover::before, .footer-contact a:hover::before { width: 100%; }
 .footer-grid a { overflow-wrap: anywhere; }
-.footer-bottom { position: relative; border-top: 1px solid #292d2a; padding-top: 22px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; color: #7f8581; font-size: 12px; }
-.footer-bottom > span:last-child { text-align: right; }
-.back-to-top { border: 1px solid #343936; border-radius: 999px; background: transparent; color: #c4c7c5; padding: 9px 14px; display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 900; letter-spacing: .12em; transition: color .2s ease, border-color .2s ease, transform .2s ease; }
-.back-to-top svg { transform: rotate(-90deg); transition: transform .2s ease; }
-.back-to-top:hover { color: var(--lime); border-color: var(--lime); transform: translateY(-2px); }
-.back-to-top:hover svg { transform: rotate(-90deg) translateX(2px); }
+.footer-bottom { position: relative; border-top: 1px solid #292d2a; padding-top: 22px; color: #7f8581; font-size: 12px; }
 
 .reveal { animation: rise .72s ease both; }
 @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
@@ -246,7 +241,7 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   html { scroll-behavior: auto; }
   .reveal { animation: none; }
   .topbar, .brand-button, .logo-mark, .desktop-nav button, .desktop-nav button::after,
-  .footer-links button, .footer-contact a, .back-to-top, .back-to-top svg { transition: none; }
+  .footer-links button, .footer-contact a { transition: none; }
   .motion-photo {
     opacity: 1;
     transform: none;
@@ -392,9 +387,6 @@ footer::before { content: ''; position: absolute; width: 360px; height: 360px; r
   footer { padding: 62px 20px 22px; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
   .footer-grid > div:first-child { grid-column: auto; }
-  .footer-bottom { grid-template-columns: 1fr; gap: 14px; }
-  .footer-bottom > span:last-child { text-align: left; }
-  .back-to-top { justify-self: start; }
   .motion-photo.from-left { --photo-x: -190px; }
   .motion-photo.from-right { --photo-x: 190px; }
   .motion-photo.from-top { --photo-y: -180px; }
