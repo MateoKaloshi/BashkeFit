@@ -41,9 +41,13 @@ h1, h2, h3, p { overflow-wrap: break-word; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(255,255,255,.94);
-  backdrop-filter: blur(14px);
+  color: var(--black);
+  background: transparent;
+  transition: color .25s ease, border-color .25s ease;
 }
+.topbar--dark { color: var(--white); border-bottom-color: rgba(255,255,255,.22); }
+.topbar--dark .logo-mark { filter: brightness(0) invert(1); }
+.topbar--dark .brand-name { color: var(--white); }
 .brand-button, .desktop-nav button, footer button {
   border: 0; background: transparent; color: inherit;
 }

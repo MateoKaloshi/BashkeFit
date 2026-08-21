@@ -66,6 +66,7 @@ function App() {
   const [testimonial, setTestimonial] = useState(0)
   const [bmi, setBmi] = useState(null)
   const [form, setForm] = useState({ age: '', weight: '', height: '' })
+  const [navOnDark, setNavOnDark] = useState(false)
 
   useEffect(() => {
     const photos = document.querySelectorAll('.motion-photo')
@@ -84,6 +85,31 @@ function App() {
 
     photos.forEach((photo) => observer.observe(photo))
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const updateNavbarTheme = () => {
+      const navbar = document.querySelector('.topbar')
+      if (!navbar) return
+
+      const navbarMiddle = navbar.getBoundingClientRect().top + navbar.offsetHeight / 2
+      const isOverDarkSection = [...document.querySelectorAll('.programs, .results, footer')]
+        .some((section) => {
+          const bounds = section.getBoundingClientRect()
+          return bounds.top <= navbarMiddle && bounds.bottom >= navbarMiddle
+        })
+
+      setNavOnDark(isOverDarkSection)
+    }
+
+    updateNavbarTheme()
+    window.addEventListener('scroll', updateNavbarTheme, { passive: true })
+    window.addEventListener('resize', updateNavbarTheme)
+
+    return () => {
+      window.removeEventListener('scroll', updateNavbarTheme)
+      window.removeEventListener('resize', updateNavbarTheme)
+    }
   }, [])
 
   const bmiLabel = useMemo(() => {
@@ -111,7 +137,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      <header className="topbar">
+      <header className={`topbar${navOnDark ? ' topbar--dark' : ''}`}>
         <button className="brand-button" onClick={() => scrollTo('home')} aria-label="Shko te kreu">
           <Brand />
         </button>
