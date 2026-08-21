@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 78" role="img" aria-label="BashkeFit logo">
+  <g fill="none" stroke="#82e675" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 42h22l9-18 14 37 10-19h19"/>
+    <path d="M19 20l18-8 10 8" opacity=".6"/>
+  </g>
+  <text x="106" y="52" font-family="Arial Black, Arial, sans-serif" font-size="35" font-weight="900" fill="#101010" letter-spacing="1">BASHKE</text>
+  <text x="257" y="52" font-family="Arial Black, Arial, sans-serif" font-size="35" font-weight="900" fill="#82e675">FIT</text>
+</svg>
