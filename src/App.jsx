@@ -21,17 +21,17 @@ const navigation = [
 ]
 
 const programs = [
-  { icon: HeartPulse, name: 'Kardio', text: 'Ndërto qëndrueshmërinë, rezistencën dhe një bazë më të fortë kardiovaskulare.' },
-  { icon: Dumbbell, name: 'Forcë', text: 'Seanca progresive me rezistencë, të ndërtuara sipas objektivave të tua.' },
-  { icon: TimerReset, name: 'HIIT', text: 'Intervale me intensitet të lartë për kondicionim dhe performancë efikase.' },
-  { icon: Salad, name: 'Ushqyerje', text: 'Strategji të thjeshta dhe realiste ushqyerjeje që mund t’i ruash në vazhdimësi.' },
+  { icon: Dumbbell, name: 'FORCË', text: 'Seanca progresive me rezistencë, të ndërtuara sipas objektivave të tua.' },
+  { icon: HeartPulse, name: 'MASË MUSKULORE', text: 'Program i strukturuar për zhvillimin e muskujve, me ngarkesë dhe progres të kontrolluar.' },
+  { icon: TimerReset, name: 'DOBËSIM', text: 'Stërvitje efikase për humbje peshe, formësim dhe përmirësim të kondicionit fizik.' },
+  { icon: Salad, name: 'USHQYERJE E SHËNDETSHME', text: 'Strategji të thjeshta dhe realiste ushqyerjeje që mund t’i ruash në vazhdimësi.' },
 ]
 
 const benefits = [
   ['Strategji ushqyerjeje', 'Udhëzime të qarta që mbështesin stërvitjen, rikuperimin dhe energjinë e përditshme.'],
-  ['Rutina stërvitore', 'Seanca të strukturuara me progres, jo ushtrime të zgjedhura rastësisht.'],
-  ['Mbështetje individuale', 'Stërvitje e përshtatur sipas nivelit, orarit dhe objektivave të tua.'],
-  ['Këshilla praktike', 'Udhëzim i zbatueshëm që të ndihmon të ruash vazhdimësinë edhe jashtë palestrës.'],
+  ['Rutina stërvitore', 'Stërvitje të strukturuara sipas objektivit tënd, jo ushtrime të zgjedhura rastësisht.'],
+  ['STËRVITJE E PERSONALIZUAR', 'Stërvitje e përshtatur sipas nivelit, orarit dhe objektivave të tua.'],
+  ['NDJEKJE E PROGRESIT', 'Monitorim i vazhdueshëm i rezultateve për të parë zhvillimin dhe për të përshtatur programin.'],
 ]
 
 const testimonials = [
@@ -170,7 +170,10 @@ function App() {
 
   const scrollTo = (id) => {
     setMenuOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById(id)?.scrollIntoView({
+      behavior: 'smooth',
+      block: id === 'about' ? 'center' : 'start',
+    })
   }
 
   const nextTestimonial = () => setTestimonial((testimonial + 1) % testimonials.length)
@@ -255,10 +258,10 @@ function App() {
           </div>
 
           <div className="about-copy reveal">
-            <p className="eyebrow">RRETH TRAJNIMIT</p>
-            <h2>PËRSHËNDETJE!<br />NE JEMI <span>BASHKËFIT</span></h2>
+            <p className="eyebrow">RRETH NESH</p>
+            <h2 className="about-title">STËRVITEMI <span>BASHKË</span>,<br />QËNDROJMË <span>FIT</span>.</h2>
             <p>
-              Ne ndërthurim stërvitjen e strukturuar, përgjegjshmërinë dhe këshillimin realist për stilin e jetesës. Çdo plan nis nga niveli yt aktual dhe ndërtohet drejt një progresi të matshëm.
+              Ne kombinojmë stërvitjen e personalizuar, udhëzimin profesional dhe mbështetjen e vazhdueshme. Çdo program ndërtohet sipas nivelit dhe objektivave të tua, për rezultate reale dhe të qëndrueshme.
             </p>
             <button className="outline-button" onClick={() => scrollTo('programs')}>MËSO MË SHUMË <ArrowRight size={18} /></button>
           </div>
@@ -286,7 +289,7 @@ function App() {
               <p className="eyebrow light">STËRVITU ME QËLLIM</p>
               <h2>PROGRAMET <span>TONA</span></h2>
             </div>
-            <p>Zgjidh fokusin që përputhet me objektivin tënd. Çdo program është progresiv, praktik dhe i lehtë për t’u ndjekur.</p>
+            <p>Zgjidh drejtimin tënd. Ne të ndihmojmë ta kthesh në progres real.</p>
           </div>
           <div className="program-grid">
             {programs.map(({ icon: Icon, name, text }) => (
@@ -294,7 +297,6 @@ function App() {
                 <div className="program-icon"><Icon size={32} strokeWidth={1.8} /></div>
                 <h3>{name}</h3>
                 <p>{text}</p>
-                <button onClick={() => scrollTo('contact')}>SHIKO PROGRAMIN <ArrowRight size={16} /></button>
               </article>
             ))}
           </div>
@@ -311,8 +313,8 @@ function App() {
 
           <div className="bmi-content reveal">
             <p className="eyebrow">MJET I SHPEJTË SHËNDETËSOR</p>
-            <h2>LLOGARIT<br /><span>IMT-NË</span> TËNDE</h2>
-            <p>Vendos matjet e tua për një vlerësim të shpejtë të indeksit të masës trupore (IMT). Ky është një tregues i thjeshtë orientues, jo një diagnozë.</p>
+            <h2>LLOGARIT<br /><span>BMI-NË</span> TËNDE</h2>
+            <p>Vendos matjet e tua për një vlerësim të shpejtë të indeksit të masës trupore (BMI). Ky është një tregues i thjeshtë orientues, jo një diagnozë.</p>
             <form className="bmi-form" onSubmit={calculateBmi}>
               <input type="number" placeholder="Mosha" aria-label="Mosha" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
               <input type="number" placeholder="Pesha / kg" aria-label="Pesha në kilogramë" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} required />

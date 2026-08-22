@@ -28,6 +28,7 @@ img { display: block; max-width: 100%; }
 .site-shell { width: 100%; overflow-x: clip; }
 .section { width: min(1400px, calc(100% - 56px)); margin: 0 auto; }
 section[id] { scroll-margin-top: 110px; }
+.programs[id] { scroll-margin-top: 0; }
 .hero > *, .about > *, .program-heading > *, .bmi > *, .results > *, .cta > *, .newsletter > *, .footer-grid > * { min-width: 0; }
 h1, h2, h3, p { overflow-wrap: break-word; }
 
@@ -112,6 +113,7 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .about-square { position: absolute; width: 230px; height: 220px; left: 22%; bottom: 0; background: var(--lime); }
 .about-dots { position: absolute; top: 48px; right: 8%; }
 .about-copy h2, .section-title h2, .bmi-content h2, .newsletter h2 { font-size: clamp(46px, 5vw, 76px); }
+.about-copy h2.about-title { font-size: clamp(35px, 4.7vw, 67px); line-height: 1; }
 .about-copy p:not(.eyebrow), .bmi-content > p:not(.eyebrow), .results-intro > p:not(.eyebrow), .cta-copy > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 560px; }
 .about-copy .outline-button { margin-top: 18px; }
 

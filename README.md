@@ -1,6 +1,6 @@
-# BashkeFit — Samantha-inspired React landing page
+# BashkeFit
 
-A React + Vite single-page fitness website inspired by the visual structure and interaction style of the Samantha Personal Trainer demo.
+A React + Vite single-page fitness website for BashkeFit.
 
 ## Run locally
 
