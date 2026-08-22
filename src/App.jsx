@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowRight,
-  BadgeCheck,
-  ChevronLeft,
-  ChevronRight,
   Dumbbell,
   HeartPulse,
+  Instagram,
   Menu,
   Salad,
   TimerReset,
@@ -16,7 +14,7 @@ const navigation = [
   { id: 'home', label: 'Kreu' },
   { id: 'about', label: 'Rreth nesh' },
   { id: 'programs', label: 'Programet' },
-  { id: 'results', label: 'Rezultatet' },
+  { id: 'bmi', label: 'BMI' },
   { id: 'contact', label: 'Kontakti' },
 ]
 
@@ -34,27 +32,6 @@ const benefits = [
   ['NDJEKJE E PROGRESIT', 'Monitorim i vazhdueshëm i rezultateve për të parë zhvillimin dhe për të përshtatur programin.'],
 ]
 
-const testimonials = [
-  {
-    name: 'Elena M.',
-    meta: '12 javë · 4 stërvitje në javë',
-    quote: 'Plani më dha më në fund strukturën që më mungonte. Ndihem më e fortë, më energjike dhe shumë më e sigurt në palestër.',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=85',
-  },
-  {
-    name: 'Daniel K.',
-    meta: '16 javë · program force',
-    quote: 'Gjithçka ishte e thjeshtë për t’u ndjekur dhe e matshme. Ndjekja e progresit më mbajti të përqendruar nga java në javë.',
-    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=900&q=85',
-  },
-  {
-    name: 'Sara L.',
-    meta: '10 javë · trajnim personal',
-    quote: 'Ndërthurja e stërvitjes me këshillimin për ushqyerjen solli ndryshimin më të madh. Gjithçka ishte personale, jo e përgjithshme.',
-    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=85',
-  },
-]
-
 function Brand({ footer = false }) {
   return (
     <span className={`brand-lockup${footer ? ' brand-lockup--footer' : ''}`}>
@@ -65,13 +42,24 @@ function Brand({ footer = false }) {
 }
 
 function App() {
-  const [testimonial, setTestimonial] = useState(0)
   const [bmi, setBmi] = useState(null)
   const [form, setForm] = useState({ age: '', weight: '', height: '' })
   const [activeSection, setActiveSection] = useState('home')
   const [navOnDark, setNavOnDark] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+
+    const returnToTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    returnToTop()
+    window.addEventListener('pageshow', returnToTop)
+
+    return () => window.removeEventListener('pageshow', returnToTop)
+  }, [])
 
   useEffect(() => {
     const photos = document.querySelectorAll('.motion-photo')
@@ -117,7 +105,7 @@ function App() {
       if (!navbar) return
 
       const navbarBounds = navbar.getBoundingClientRect()
-      const marker = navbarBounds.bottom + 24
+      const marker = window.innerHeight * 0.5
       const sections = navigation
         .map(({ id }) => document.getElementById(id))
         .filter(Boolean)
@@ -125,7 +113,7 @@ function App() {
       const currentSection = [...sections].reverse().find((section) => (
         section.getBoundingClientRect().top <= marker
       ))
-      const darkSection = [...document.querySelectorAll('.programs, .results, footer')]
+      const darkSection = [...document.querySelectorAll('.programs, footer')]
         .find((section) => {
           const bounds = section.getBoundingClientRect()
           const navbarMiddle = navbarBounds.top + navbarBounds.height / 2
@@ -172,12 +160,9 @@ function App() {
     setMenuOpen(false)
     document.getElementById(id)?.scrollIntoView({
       behavior: 'smooth',
-      block: id === 'about' ? 'center' : 'start',
+      block: id === 'about' || id === 'bmi' || id === 'contact' ? 'center' : 'start',
     })
   }
-
-  const nextTestimonial = () => setTestimonial((testimonial + 1) % testimonials.length)
-  const prevTestimonial = () => setTestimonial((testimonial - 1 + testimonials.length) % testimonials.length)
 
   return (
     <div className="site-shell">
@@ -216,9 +201,9 @@ function App() {
         <section className="hero section" id="home">
           <div className="hero-copy reveal">
             <p className="eyebrow">STËRVITJE PERSONALE ONLINE DHE FIZIKISHT</p>
-            <h1>NDËRTO FORCË.<br />KRIJO <span className="hero-accent">RITËM.</span></h1>
+            <h1>NE JEMI <span className="hero-brand"><span className="hero-accent">BASHKËFIT</span><span className="hero-dot">.</span></span></h1>
             <p className="hero-description">
-              Stërvitje e zgjuar, udhëzim personal dhe një plan i ndërtuar rreth objektivave të tua — që progresi të bëhet pjesë e rutinës.
+              Stërvitje me qëllim, udhëzim profesional dhe mbështetje të vazhdueshme në çdo hap. Çdo plan përshtatet me nivelin, ritmin dhe objektivat e tua, që progresi të jetë real dhe i qëndrueshëm.
             </p>
             <button className="primary-button" onClick={() => scrollTo('contact')}>FILLO TANI <ArrowRight size={18} /></button>
           </div>
@@ -229,6 +214,8 @@ function App() {
             <div className="hero-image-wrap motion-photo from-right">
               <img
                 src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1100&q=90"
+                srcSet="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=480&q=82 480w, https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=760&q=85 760w, https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1100&q=90 1100w"
+                sizes="(max-width: 640px) 94vw, (max-width: 900px) 86vw, 40vw"
                 alt="Atlete duke u stërvitur"
                 className="hero-image"
                 fetchPriority="high"
@@ -236,23 +223,22 @@ function App() {
               />
             </div>
             <div className="hero-note">
-              <strong>Qëndro i shëndetshëm duke qenë aktiv.</strong>
-              <p>Zakone të thjeshta. Performancë më e mirë. Progres i vazhdueshëm.</p>
+              <div className="hero-note-icon"><HeartPulse size={25} strokeWidth={2} /></div>
+              <div>
+                <span>ZGJIDH TË LËVIZËSH</span>
+                <strong>Nis sot.<br />Ndrysho nesër.</strong>
+                <p>Progresi fillon me një hap të vogël.</p>
+              </div>
             </div>
           </div>
 
-          <div className="hero-stats">
-            <div><strong>3</strong><span>Trajnerë të certifikuar</span></div>
-            <div><strong>8</strong><span>Vite përvojë</span></div>
-            <div><strong>47+</strong><span>Klientë aktivë</span></div>
-          </div>
         </section>
 
         <section className="about section" id="about">
           <div className="photo-collage reveal">
-            <div className="photo photo-a motion-photo from-left"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=85" alt="Seancë stërvitore" loading="lazy" decoding="async" /></div>
-            <div className="photo photo-b motion-photo from-top"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=85" alt="Pajisje palestre" loading="lazy" decoding="async" /></div>
-            <div className="photo photo-c motion-photo from-right"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=85" alt="Stërvitje fitnesi" loading="lazy" decoding="async" /></div>
+            <div className="photo photo-a motion-photo from-left"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=85" srcSet="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=360&q=80 360w, https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=85 700w" sizes="(max-width: 640px) 38vw, 28vw" alt="Seancë stërvitore" loading="lazy" decoding="async" /></div>
+            <div className="photo photo-b motion-photo from-top"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=85" srcSet="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=360&q=80 360w, https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=700&q=85 700w" sizes="(max-width: 640px) 40vw, 30vw" alt="Pajisje palestre" loading="lazy" decoding="async" /></div>
+            <div className="photo photo-c motion-photo from-right"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=85" srcSet="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=360&q=80 360w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=700&q=85 700w" sizes="(max-width: 640px) 34vw, 26vw" alt="Stërvitje fitnesi" loading="lazy" decoding="async" /></div>
             <div className="about-square"></div>
             <div className="dot-grid about-dots"></div>
           </div>
@@ -302,10 +288,10 @@ function App() {
           </div>
         </section>
 
-        <section className="bmi section">
+        <section className="bmi section" id="bmi">
           <div className="bmi-art reveal">
             <div className="bmi-photo motion-photo from-bottom">
-              <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=1000&q=85" alt="Atlete fitnesi" loading="lazy" decoding="async" />
+              <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=1000&q=85" srcSet="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=480&q=80 480w, https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=800&q=85 800w" sizes="(max-width: 900px) 86vw, 36vw" alt="Atlete fitnesi" loading="lazy" decoding="async" />
             </div>
             <div className="bmi-lime-block"></div>
             <div className="dot-grid bmi-dots"></div>
@@ -316,72 +302,43 @@ function App() {
             <h2>LLOGARIT<br /><span>BMI-NË</span> TËNDE</h2>
             <p>Vendos matjet e tua për një vlerësim të shpejtë të indeksit të masës trupore (BMI). Ky është një tregues i thjeshtë orientues, jo një diagnozë.</p>
             <form className="bmi-form" onSubmit={calculateBmi}>
-              <input type="number" placeholder="Mosha" aria-label="Mosha" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
-              <input type="number" placeholder="Pesha / kg" aria-label="Pesha në kilogramë" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} required />
-              <input type="number" placeholder="Gjatësia / cm" aria-label="Gjatësia në centimetra" value={form.height} onChange={(e) => setForm({ ...form, height: e.target.value })} required />
+              <input type="number" inputMode="numeric" min="1" placeholder="Mosha" aria-label="Mosha" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
+              <input type="number" inputMode="decimal" min="1" step="0.1" placeholder="Pesha / kg" aria-label="Pesha në kilogramë" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} required />
+              <input type="number" inputMode="decimal" min="1" step="0.1" placeholder="Gjatësia / cm" aria-label="Gjatësia në centimetra" value={form.height} onChange={(e) => setForm({ ...form, height: e.target.value })} required />
               <button className="primary-button" type="submit">LLOGARIT</button>
             </form>
             {bmi && <div className="bmi-result" aria-live="polite"><strong>{bmi}</strong><span>{bmiLabel}</span></div>}
           </div>
         </section>
 
-        <section className="results section" id="results">
-          <div className="results-intro reveal">
-            <p className="eyebrow light">HISTORI KLIENTËSH</p>
-            <h2>NJERËZ TË VËRTETË.<br /><span>REZULTATE TË VËRTETA.</span></h2>
-            <p>Progresi duket ndryshe për secilin. Ajo që na bashkon është një plan i qartë dhe punë e vazhdueshme.</p>
-            <div className="slider-buttons">
-              <button onClick={prevTestimonial} aria-label="Dëshmia e mëparshme"><ChevronLeft size={22} /></button>
-              <button onClick={nextTestimonial} aria-label="Dëshmia e radhës"><ChevronRight size={22} /></button>
-            </div>
-          </div>
-          <div className="testimonial reveal">
-            <img src={testimonials[testimonial].image} alt={'Klientja/klienti ' + testimonials[testimonial].name} loading="lazy" decoding="async" />
-            <div className="testimonial-text">
-              <div className="quote-mark">“</div>
-              <p>{testimonials[testimonial].quote}</p>
-              <div><strong>{testimonials[testimonial].name}</strong><span>{testimonials[testimonial].meta}</span></div>
-            </div>
-          </div>
-        </section>
-
         <section className="cta section" id="contact">
-          <div className="cta-copy reveal">
-            <p className="eyebrow">GATI PËR TË LËVIZUR?</p>
-            <h2>GATI PËR<br /><span>TË FILLUAR?</span></h2>
-            <p>Na trego çfarë dëshiron të përmirësosh dhe ne do të të ndihmojmë të zgjedhësh pikënisjen e duhur.</p>
-            <div className="cta-checks">
-              <span><BadgeCheck size={18} /> Plan i personalizuar</span>
-              <span><BadgeCheck size={18} /> Ndjekje e progresit</span>
-              <span><BadgeCheck size={18} /> Mbështetje e vazhdueshme</span>
+          <div className="contact-poster reveal">
+            <Instagram className="contact-watermark" aria-hidden="true" strokeWidth={1.2} />
+            <div className="contact-poster-copy">
+              <p className="eyebrow">FILLIMI YT NIS KËTU</p>
+              <h2>LE TA NISIM<br /><span>BASHKË.</span></h2>
+              <p>Na trego objektivin tënd dhe ne do të të ndihmojmë të ndërtosh një plan të qartë, të përshtatur për ty.</p>
+            </div>
+            <a className="contact-instagram-button" href="https://www.instagram.com/bashkefit" target="_blank" rel="noreferrer">
+              <Instagram size={22} /> NA KONTAKTO <ArrowRight size={20} />
+            </a>
+            <div className="contact-poster-footer">
+              <div className="contact-meta">
+                <div><span>EMAIL</span><a href="mailto:bashkefit@gmail.com">bashkefit@gmail.com</a></div>
+                <div><span>INSTAGRAM</span><a href="https://www.instagram.com/bashkefit" target="_blank" rel="noreferrer">@bashkefit</a></div>
+                <div><span>VENDNDODHJA</span><strong>TIRANË</strong></div>
+              </div>
             </div>
           </div>
-          <form className="contact-card reveal" onSubmit={(e) => e.preventDefault()}>
-            <label>EMRI DHE MBIEMRI<input type="text" placeholder="Emri dhe mbiemri" /></label>
-            <label>ADRESA E EMAILIT<input type="email" placeholder="ti@shembull.com" /></label>
-            <label>OBJEKTIVI KRYESOR<select defaultValue=""><option value="" disabled>Zgjidh një objektiv</option><option>Humbje peshe</option><option>Rritje force</option><option>Përmirësim kondicioni</option><option>Trajnim personal</option></select></label>
-            <button className="primary-button" type="submit">BASHKOHU TANI <ArrowRight size={18} /></button>
-          </form>
         </section>
 
-        <section className="newsletter section">
-          <div className="newsletter-copy reveal">
-            <p className="eyebrow">QËNDRO I MOTIVUAR</p>
-            <h2>ABONOHU NË<br /><span>BULETININ TONË</span></h2>
-          </div>
-          <form className="newsletter-form reveal" onSubmit={(e) => e.preventDefault()}>
-            <input type="text" placeholder="Emri yt" aria-label="Emri yt" />
-            <input type="email" placeholder="Adresa jote e emailit" aria-label="Adresa jote e emailit" />
-            <button className="primary-button" type="submit">ABONOHU</button>
-          </form>
-        </section>
       </main>
 
       <footer>
         <div className="footer-grid">
-          <div className="footer-intro"><button className="footer-brand-button" onClick={() => scrollTo('home')} aria-label="Shko te kreu"><Brand footer /></button><p>Stërvitje, udhëzim dhe një komunitet i krijuar për të të mbajtur gjithmonë në lëvizje.</p></div>
+          <div className="footer-intro"><button className="footer-brand-button" onClick={() => scrollTo('home')} aria-label="Shko te kreu"><Brand footer /></button><p>Bashkë drejt më shumë force, energjie dhe progresi.</p></div>
           <div className="footer-links"><h4>MENU-ja</h4><button onClick={() => scrollTo('home')}>Kreu</button><button onClick={() => scrollTo('about')}>Rreth nesh</button><button onClick={() => scrollTo('programs')}>Programet</button></div>
-          <div className="footer-contact"><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><a href="https://www.instagram.com/bashkefit" target="_blank" rel="noreferrer">Instagram</a><p>bashkefit@gmail.com</p></div>
+          <div className="footer-contact"><h4>KONTAKTI</h4><p>Tiranë, Shqipëri</p><a href="https://www.instagram.com/bashkefit" target="_blank" rel="noreferrer">Instagram</a><a href="mailto:bashkefit@gmail.com">bashkefit@gmail.com</a></div>
         </div>
         <div className="footer-bottom">
           <span>© 2026 BashkëFit</span>
