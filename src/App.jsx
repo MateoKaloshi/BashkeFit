@@ -1,14 +1,29 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowRight,
-  Dumbbell,
-  HeartPulse,
+  ChevronDown,
   Instagram,
-  Menu,
-  Salad,
-  TimerReset,
-  X,
 } from 'lucide-react'
+
+function MuscularBody({ size = 32 }) {
+  const iconSize = size + 12
+  return <img className="muscular-body-icon" src="/torso.png" alt="" aria-hidden="true" width={iconSize} height={iconSize} />
+}
+
+function WeightLossIcon({ size = 32 }) {
+  const iconSize = size + 12
+  return <img src="/weight-loss-card.png" alt="" aria-hidden="true" width={iconSize} height={iconSize} />
+}
+
+function StrengthIcon({ size = 32 }) {
+  const iconSize = size + 8
+  return <img src="/lighting.png" alt="" aria-hidden="true" width={iconSize} height={iconSize} />
+}
+
+function HealthyFoodIcon({ size = 32 }) {
+  const iconSize = size + 12
+  return <img src="/salad.png" alt="" aria-hidden="true" width={iconSize} height={iconSize} />
+}
 
 const navigation = [
   { id: 'home', label: 'Kreu' },
@@ -19,10 +34,10 @@ const navigation = [
 ]
 
 const programs = [
-  { icon: Dumbbell, name: 'FORCË', text: 'Seanca progresive me rezistencë, të ndërtuara sipas objektivave të tua.' },
-  { icon: HeartPulse, name: 'MASË MUSKULORE', text: 'Program i strukturuar për zhvillimin e muskujve, me ngarkesë dhe progres të kontrolluar.' },
-  { icon: TimerReset, name: 'DOBËSIM', text: 'Stërvitje efikase për humbje peshe, formësim dhe përmirësim të kondicionit fizik.' },
-  { icon: Salad, name: 'USHQYERJE E SHËNDETSHME', text: 'Strategji të thjeshta dhe realiste ushqyerjeje që mund t’i ruash në vazhdimësi.' },
+  { icon: StrengthIcon, name: 'FORCË', text: 'Seanca progresive me rezistencë, të ndërtuara sipas objektivave të tua.' },
+  { icon: MuscularBody, name: 'MASË MUSKULORE', text: 'Program i strukturuar për zhvillimin e muskujve, me ngarkesë dhe progres të kontrolluar.' },
+  { icon: WeightLossIcon, name: 'DOBËSIM', text: 'Stërvitje efikase për humbje peshe, formësim dhe përmirësim të kondicionit fizik.' },
+  { icon: HealthyFoodIcon, name: 'USHQYERJE E SHËNDETSHME', text: 'Strategji të thjeshta dhe realiste ushqyerjeje që mund t’i ruash në vazhdimësi.' },
 ]
 
 const benefits = [
@@ -48,6 +63,7 @@ function App() {
   const [navOnDark, setNavOnDark] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const navigationTarget = useRef(null)
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -63,20 +79,31 @@ function App() {
 
   useEffect(() => {
     const photos = document.querySelectorAll('.motion-photo')
+    const photosByTrigger = new Map()
+
+    photos.forEach((photo) => {
+      const trigger = photo.closest('.photo-collage, .hero-visual, .bmi-art') || photo.parentElement
+      const triggerPhotos = photosByTrigger.get(trigger) || []
+      triggerPhotos.push(photo)
+      photosByTrigger.set(trigger, triggerPhotos)
+    })
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const linkedPhotos = photosByTrigger.get(entry.target) || []
+
           if (entry.intersectionRatio >= 0.18) {
-            entry.target.classList.add('is-visible')
-          } else {
-            entry.target.classList.remove('is-visible')
+            linkedPhotos.forEach((photo) => photo.classList.add('is-visible'))
+          } else if (entry.intersectionRatio <= 0.02) {
+            linkedPhotos.forEach((photo) => photo.classList.remove('is-visible'))
           }
         })
       },
-      { threshold: [0, 0.18] },
+      { threshold: [0, 0.02, 0.18] },
     )
 
-    photos.forEach((photo) => observer.observe(photo))
+    photosByTrigger.forEach((_, trigger) => observer.observe(trigger))
     return () => observer.disconnect()
   }, [])
 
@@ -105,14 +132,38 @@ function App() {
       if (!navbar) return
 
       const navbarBounds = navbar.getBoundingClientRect()
-      const marker = window.innerHeight * 0.5
+      const isResponsive = window.innerWidth <= 900
+      const marker = isResponsive
+        ? navbarBounds.bottom + 24
+        : window.innerHeight * 0.5
       const sections = navigation
-        .map(({ id }) => document.getElementById(id))
+        .map(({ id }) => {
+          const section = document.getElementById(id)
+          if (!section) return null
+
+          const responsiveAnchor = {
+            about: '.about-copy',
+            programs: '.program-heading',
+            bmi: '.bmi-content',
+            contact: '.contact-poster-copy',
+          }[id]
+
+          return {
+            id,
+            anchor: isResponsive && responsiveAnchor
+              ? section.querySelector(responsiveAnchor) || section
+              : section,
+          }
+        })
         .filter(Boolean)
 
-      const currentSection = [...sections].reverse().find((section) => (
-        section.getBoundingClientRect().top <= marker
-      ))
+      const currentSection = [...sections].reverse().find(({ id, anchor }) => {
+        const tabletTolerance = window.innerWidth > 640 && window.innerWidth <= 900 ? 4 : 0
+        const sectionMarker = isResponsive && id === 'contact'
+          ? navbarBounds.bottom + 82 + tabletTolerance
+          : marker + tabletTolerance
+        return anchor.getBoundingClientRect().top <= sectionMarker
+      })
       const darkSection = [...document.querySelectorAll('.programs, footer')]
         .find((section) => {
           const bounds = section.getBoundingClientRect()
@@ -120,8 +171,10 @@ function App() {
           return bounds.top <= navbarMiddle && bounds.bottom >= navbarMiddle
         })
 
-      setActiveSection(currentSection?.id || 'home')
-      setNavOnDark(Boolean(darkSection))
+      setActiveSection(navigationTarget.current || currentSection?.id || 'home')
+      setNavOnDark(isResponsive
+        ? currentSection?.id === 'programs' || darkSection?.tagName === 'FOOTER'
+        : Boolean(darkSection))
       setNavScrolled(window.scrollY > 24)
     }
 
@@ -158,9 +211,106 @@ function App() {
 
   const scrollTo = (id) => {
     setMenuOpen(false)
-    document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: id === 'about' || id === 'bmi' || id === 'contact' ? 'center' : 'start',
+    const target = document.getElementById(id)
+    if (!target) return
+
+    if (window.innerWidth > 900 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: id === 'about' || id === 'bmi' || id === 'contact' ? 'center' : 'start',
+      })
+      return
+    }
+
+    const isTabletNavigation = window.innerWidth > 640 && window.innerWidth <= 900
+    if (isTabletNavigation) {
+      navigationTarget.current = id
+      setActiveSection(id)
+    }
+
+    window.requestAnimationFrame(() => {
+      const start = window.scrollY
+      const bounds = target.getBoundingClientRect()
+      const centered = id === 'contact'
+      const scrollMargin = Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0
+      const navbar = document.querySelector('.topbar')
+      const menuToggle = navbar?.querySelector('.menu-toggle')
+      const navbarBottom = window.innerWidth <= 640 && menuToggle
+        ? menuToggle.getBoundingClientRect().bottom + (Number.parseFloat(getComputedStyle(navbar).paddingBottom) || 0)
+        : navbar?.getBoundingClientRect().bottom || scrollMargin
+      const aboutCopyTop = id === 'about'
+        ? target.querySelector('.about-copy')?.getBoundingClientRect().top
+        : null
+      const programHeadingTop = id === 'programs'
+        ? target.querySelector('.program-heading')?.getBoundingClientRect().top
+        : null
+      const bmiContentTop = id === 'bmi'
+        ? target.querySelector('.bmi-content')?.getBoundingClientRect().top
+        : null
+      const contactCopyTop = id === 'contact'
+        ? target.querySelector('.contact-poster-copy')?.getBoundingClientRect().top
+        : null
+      const destination = id === 'home'
+        ? 0
+        : id === 'about' && aboutCopyTop != null
+          ? start + aboutCopyTop - navbarBottom - 24
+        : id === 'programs' && programHeadingTop != null
+          ? start + programHeadingTop - navbarBottom - 24
+        : id === 'bmi' && bmiContentTop != null
+          ? start + bmiContentTop - navbarBottom - 24
+        : id === 'contact' && contactCopyTop != null
+          ? start + contactCopyTop - navbarBottom - 82
+        : centered
+          ? start + bounds.top - ((window.innerHeight - bounds.height) / 2)
+          : start + bounds.top - scrollMargin
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      const end = Math.max(0, Math.min(destination, maxScroll))
+      const scrollDistance = Math.abs(end - start)
+      const duration = window.innerWidth <= 640
+        ? Math.min(2400, Math.max(1150, scrollDistance * 0.75))
+        : 750
+      const startedAt = performance.now()
+      const pageRoot = document.documentElement
+      const previousScrollBehavior = pageRoot.style.scrollBehavior
+      if (window.innerWidth <= 640) pageRoot.style.scrollBehavior = 'auto'
+
+      const animateScroll = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1)
+        const eased = window.innerWidth <= 640
+          ? 0.5 - (Math.cos(Math.PI * progress) / 2)
+          : progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2
+
+        window.scrollTo(0, start + ((end - start) * eased))
+        if (progress < 1) {
+          window.requestAnimationFrame(animateScroll)
+        } else if (id === 'contact') {
+          window.requestAnimationFrame(() => {
+            const finalNavbar = document.querySelector('.topbar')
+            const finalToggle = finalNavbar?.querySelector('.menu-toggle')
+            const finalNavbarBottom = window.innerWidth <= 640 && finalToggle
+              ? finalToggle.getBoundingClientRect().bottom + (Number.parseFloat(getComputedStyle(finalNavbar).paddingBottom) || 0)
+              : finalNavbar?.getBoundingClientRect().bottom || 0
+            const finalContactTop = target.querySelector('.contact-poster-copy')?.getBoundingClientRect().top
+
+            if (finalContactTop != null) {
+              window.scrollTo(0, window.scrollY + finalContactTop - finalNavbarBottom - 82)
+            }
+            pageRoot.style.scrollBehavior = previousScrollBehavior
+          })
+        } else if (progress === 1) {
+          pageRoot.style.scrollBehavior = previousScrollBehavior
+        }
+
+        if (progress === 1 && isTabletNavigation) {
+          window.setTimeout(() => {
+            if (navigationTarget.current === id) navigationTarget.current = null
+          }, 180)
+        }
+      }
+
+      window.requestAnimationFrame(animateScroll)
     })
   }
 
@@ -172,14 +322,14 @@ function App() {
         </button>
 
         <button
-          className="menu-toggle"
+          className={`menu-toggle${menuOpen ? ' is-open' : ''}`}
           type="button"
           aria-label={menuOpen ? 'Mbyll menunë' : 'Hap menunë'}
           aria-expanded={menuOpen}
           aria-controls="main-navigation"
           onClick={() => setMenuOpen((open) => !open)}
         >
-          {menuOpen ? <X size={23} /> : <Menu size={23} />}
+          <ChevronDown className="dropdown-arrow" size={24} strokeWidth={2} aria-hidden="true" />
         </button>
 
         <nav id="main-navigation" className={`desktop-nav${menuOpen ? ' is-open' : ''}`} aria-label="Navigimi kryesor">
@@ -203,7 +353,7 @@ function App() {
             <p className="eyebrow">STËRVITJE PERSONALE ONLINE DHE FIZIKISHT</p>
             <h1>NE JEMI <span className="hero-brand"><span className="hero-accent">BASHKËFIT</span><span className="hero-dot">.</span></span></h1>
             <p className="hero-description">
-              Stërvitje me qëllim, udhëzim profesional dhe mbështetje të vazhdueshme në çdo hap. Çdo plan përshtatet me nivelin, ritmin dhe objektivat e tua, që progresi të jetë real dhe i qëndrueshëm.
+              BashkëFit lindi me një ide të thjeshtë: ta bëjmë stërvitjen pjesë të jetës, jo thjesht të rutinës. Një hapësirë ku motivimi, disiplina dhe progresi bashkohen për të të çuar më pranë versionit tënd më të mirë.
             </p>
             <button className="primary-button" onClick={() => scrollTo('contact')}>FILLO TANI <ArrowRight size={18} /></button>
           </div>
@@ -221,14 +371,6 @@ function App() {
                 fetchPriority="high"
                 decoding="async"
               />
-            </div>
-            <div className="hero-note">
-              <div className="hero-note-icon"><HeartPulse size={25} strokeWidth={2} /></div>
-              <div>
-                <span>ZGJIDH TË LËVIZËSH</span>
-                <strong>Nis sot.<br />Ndrysho nesër.</strong>
-                <p>Progresi fillon me një hap të vogël.</p>
-              </div>
             </div>
           </div>
 
@@ -291,7 +433,7 @@ function App() {
         <section className="bmi section" id="bmi">
           <div className="bmi-art reveal">
             <div className="bmi-photo motion-photo from-bottom">
-              <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=1000&q=85" srcSet="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=480&q=80 480w, https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=800&q=85 800w" sizes="(max-width: 900px) 86vw, 36vw" alt="Atlete fitnesi" loading="lazy" decoding="async" />
+              <img src="/bmi-realistic-branded.png" alt="Atlete me logon BashkëFit duke matur belin" loading="lazy" decoding="async" />
             </div>
             <div className="bmi-lime-block"></div>
             <div className="dot-grid bmi-dots"></div>
