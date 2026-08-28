@@ -1,0 +1,15 @@
+{
+  "name": "BashkëFit",
+  "short_name": "BashkëFit",
+  "icons": [
+    {
+      "src": "/bashkefit-favicon-large.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#82e675",
+  "background_color": "#0b0d0c",
+  "display": "standalone"
+}
